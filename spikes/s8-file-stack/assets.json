@@ -1,0 +1,30 @@
+{
+  "fonts": {
+    "url": "https://raw.githubusercontent.com/notofonts/notofonts.github.io/ab2c1e2157930e8c211d6e26f52f68e6d52f02ad/fonts/{family}/hinted/ttf/{family}-Regular.ttf",
+    "licence": "SIL Open Font License 1.1",
+    "files": {
+      "NotoSans-Regular.ttf": { "family": "NotoSans", "bytes": 621572, "sha256": "478c558ea716033cd60c03438f628dfa75694dcf6b5f6d505a2f05fd2b4f3823" },
+      "NotoSansDevanagari-Regular.ttf": { "family": "NotoSansDevanagari", "bytes": 243520, "sha256": "4e3c66638958c3e2ab5d37f47a8deb89fffeb7be9985c665a519bbc7ba762313" },
+      "NotoSansBengali-Regular.ttf": { "family": "NotoSansBengali", "bytes": 143072, "sha256": "b55c62ee531e3214da6c0701daecea89a52ba42db7d8206b92e6b51f397a3193" },
+      "NotoSansMalayalam-Regular.ttf": { "family": "NotoSansMalayalam", "bytes": 112936, "sha256": "c08de7fa8d032a5d6a4d120fb82c78cec60b362a4e73fa26360d89759ff2a7f9" },
+      "NotoSansTamil-Regular.ttf": { "family": "NotoSansTamil", "bytes": 73992, "sha256": "3c0a186feb3c63c7f6d63e1511dcdc144e745ae09b98e217c83f3e317974f6f9" },
+      "NotoSansTelugu-Regular.ttf": { "family": "NotoSansTelugu", "bytes": 235176, "sha256": "b274780b69d1d23fe84b55e809a152cb2ac5306d33864b1f87622f6971871aae" },
+      "NotoNastaliqUrdu-Regular.ttf": { "family": "NotoNastaliqUrdu", "bytes": 253396, "sha256": "4d05b6821862ca1f3c80c47c80a352b47dd349ab73814f60e377eea311e0e42c" },
+      "NotoNaskhArabic-Regular.ttf": { "family": "NotoNaskhArabic", "bytes": 247336, "sha256": "6f0a92031367b2f5a2078fe9d24f3433122b61a0bad57c423aad8f3c39aa2e6e" }
+    }
+  },
+  "tessdata_best": {
+    "url": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_best/e12c65a915945e4c28e237a9b52bc4a8f39a0cec/{lang}.traineddata",
+    "licence": "Apache License 2.0",
+    "files": {
+      "eng.traineddata": { "lang": "eng", "bytes": 15400601, "sha256": "8280aed0782fe27257a68ea10fe7ef324ca0f8d85bd2fd145d1c2b560bcb66ba" },
+      "hin.traineddata": { "lang": "hin", "bytes": 11895564, "sha256": "bd2e65a2184af08a167b0be2439e91fa5edbc4394399ca2f692b843ae26e78d6" },
+      "ben.traineddata": { "lang": "ben", "bytes": 11045427, "sha256": "1cd0129288d1f74f6661c35e638e487bd146a66bb732ecd9e011e48dcb0df623" },
+      "mal.traineddata": { "lang": "mal", "bytes": 12524967, "sha256": "b4a8b1b2fd8c5754aa0f543568626aad514d94a6c1e138ef0bf1a329aa189ef0" },
+      "tam.traineddata": { "lang": "tam", "bytes": 6023201, "sha256": "4b9ce85987f629dd31eaf87443a1646452a43cdf91fcf05e017382ad595dcb9e" },
+      "tel.traineddata": { "lang": "tel", "bytes": 9098795, "sha256": "81b0a1cfaf8bbf0f87da72b8c348264c6f24130766f5c4ade733fc20c05aaccc" },
+      "urd.traineddata": { "lang": "urd", "bytes": 7994323, "sha256": "65af3f6e50a3c3df15d7b405aab5d467e53433207745c8f5be5b8ff1a58a67c8" },
+      "ara.traineddata": { "lang": "ara", "bytes": 12603724, "sha256": "ab9d157d8e38ca00e7e39c7d5363a5239e053f5b0dbdb3167dde9d8124335896" }
+    }
+  }
+}

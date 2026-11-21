@@ -1,0 +1,76 @@
+name: Spike S-8 (file stack)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "spikes/s8-file-stack/**"
+      - ".github/workflows/spike-s8.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  spike:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: spikes/s8-file-stack
+    env:
+      OUT_DIR: ${{ github.workspace }}/spikes/s8-file-stack/out
+      ASSETS_DIR: ${{ github.workspace }}/spikes/s8-file-stack/assets
+      PDFJS_DIR: ${{ runner.temp }}/pdfjs
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - name: Tesseract from Ubuntu packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends tesseract-ocr tesseract-ocr-osd \
+            tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-ben tesseract-ocr-mal \
+            tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-urd tesseract-ocr-ara >/dev/null
+          tesseract --version | head -1
+          dpkg-query -W -f='${Package} ${Version} ${Installed-Size} KB\n' 'tesseract-ocr*' | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Python packages (hash-locked, no dependencies)
+        run: python -m pip install --require-hashes --no-deps -r requirements.txt
+      - name: pdf.js (for the text-layer probe)
+        run: |
+          mkdir -p "$PDFJS_DIR"
+          cd "$PDFJS_DIR"
+          echo '{"private":true}' > package.json
+          npm install --silent --no-audit --no-fund --ignore-scripts pdfjs-dist@6.5.438
+      - name: Pinned fonts and Tesseract models
+        run: python fetch_assets.py
+      - name: Part A, in-place rewrite
+        run: python rewrite.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Text-layer probe
+        if: always()
+        run: python text_layer_probe.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Part B, Tesseract
+        if: always()
+        run: python ocr.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Tesseract packages in candidate Lambda base images
+        if: always()
+        continue-on-error: true
+        run: |
+          echo "== public.ecr.aws/lambda/python:3.13 (Amazon Linux 2023)"
+          docker run --rm --entrypoint /bin/sh public.ecr.aws/lambda/python:3.13 -c \
+            'head -2 /etc/os-release; (command -v dnf || command -v microdnf); (dnf -q list --available "tesseract*" 2>&1 || microdnf repoquery "tesseract*" 2>&1) | head -20'
+          echo "== python:3.13-slim (Debian)"
+          docker run --rm python:3.13-slim sh -c \
+            'head -2 /etc/os-release; apt-get update -qq >/dev/null 2>&1; apt-cache policy tesseract-ocr tesseract-ocr-mal | grep -E "^[a-z]|Candidate"'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: spike-s8-out
+          path: spikes/s8-file-stack/out/
+          retention-days: 30
